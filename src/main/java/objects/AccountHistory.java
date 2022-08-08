@@ -8,7 +8,7 @@ public class AccountHistory {
     private String operationType;
     private float sumChanging;
 
-    public AccountHistory(float balance, LocalDateTime time, String operationType, float sumChanging) {
+    public AccountHistory() {
         this.balance = balance;
         this.time = time;
         this.operationType = operationType;

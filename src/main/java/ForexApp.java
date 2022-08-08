@@ -8,5 +8,6 @@ public class ForexApp {
         Symbol s = new Symbol();
         s.setSymbol("EUR/USD");
         System.out.println(dataSource.getSymbolsList());
+
     }
 }

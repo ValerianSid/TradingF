@@ -5,8 +5,10 @@ import java.util.Map;
 
 public class Wallet {
     private String currency;
-    private AccountHistory accountHistory;
-    private Map<String, AccountHistory> walletHistory;
     private List<AccountHistory> accountHistoryList;
 
+    public Wallet() {
+        this.currency = currency;
+        this.accountHistoryList.add(new AccountHistory());
+    }
 }
