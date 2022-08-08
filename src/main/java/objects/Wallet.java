@@ -1,13 +1,12 @@
 package objects;
 
+import java.util.List;
 import java.util.Map;
 
 public class Wallet {
     private String currency;
-    private long accountAmmount;
     private AccountHistory accountHistory;
     private Map<String, AccountHistory> walletHistory;
-    private Map<String, Long> walletAmmount;
-
+    private List<AccountHistory> accountHistoryList;
 
 }
