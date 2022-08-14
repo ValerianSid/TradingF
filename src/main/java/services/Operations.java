@@ -4,5 +4,6 @@ public enum Operations {
     WIEWBALANCE,
     MANYTRANSFER,
     ADDACCOUNT,
-    CASHWITHDRAWAL
+    CASHWITHDRAWAL,
+    EXCHANGE
 }

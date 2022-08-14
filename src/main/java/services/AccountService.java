@@ -7,7 +7,7 @@ public interface AccountService {
 
     String moneyTransfer(int ammount, String account) throws NoEnoughMoneyException;//денежный перевод
 
-    String addAcount(int ammount);//пополнение счета
+    String addAccount(int ammount);//пополнение счета
 
     void cashWithDrawal(int ammount) throws NoEnoughMoneyException;//снятие наличных
 }
