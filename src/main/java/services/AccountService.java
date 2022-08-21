@@ -10,4 +10,5 @@ public interface AccountService {
     String addAccount(int ammount);//пополнение счета
 
     void cashWithDrawal(int ammount) throws NoEnoughMoneyException;//снятие наличных
+    void newAccount(String name,String password);
 }
