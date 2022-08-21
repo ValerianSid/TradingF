@@ -11,21 +11,24 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public String moneyTransfer(int ammount, String account) throws NoEnoughMoneyException {
-        if(User.getBalance<ammount) {
+        if(Account.getBalance<ammount) {
             throw new NoEnoughMoneyException();
         }
-        User.setBalance(getBalance()-ammount);
+        Account.setBalance(getBalance()-ammount);
         return "Сумма "+ammount+" успешно переведена пользователю "+ account;
     }
 
     @Override
     public String addAccount(int ammount) {
-        User.setBalance(getBalance()+ammount);
+        Account.setBalance(getBalance()+ammount);
         return "Баланс пополнен на сумму: "+ ammount;
     }
 
     @Override
     public void cashWithDrawal(int ammount) throws NoEnoughMoneyException {
-
+        if(Account.getBalance<ammount) {
+            throw new NoEnoughMoneyException();
+        }
+        Account.setBalance(getBalance()-ammount);
     }
 }
