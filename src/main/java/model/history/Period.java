@@ -22,4 +22,20 @@ public enum Period {
         }
         return String.format("%d%s", period, this.suffix);
     }
+
+    public static Period fromString(String input) {
+        switch (input) {
+            case "m":
+                return Period.MINUTE;
+            case "h":
+                return Period.HOUR;
+            case "d":
+                return Period.DAY;
+            case "w":
+                return Period.WEEK;
+            case "month":
+                return Period.MONTH;
+            default: throw new ConnectionException("Период не определен");
+        }
+    }
 }
