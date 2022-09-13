@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ForexApp {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
     private IOService ioService;
 
     public ForexApp() {
@@ -26,9 +26,9 @@ public class ForexApp {
     }
 
     public void run() throws IOException {
-        Symbol s = new Symbol();
-        s.setSymbol("EUR/USD");
-        System.out.println(dataSource.getSymbolsList());
+//        Symbol s = new Symbol();
+//        s.setSymbol("EUR/USD");
+//        System.out.println(dataSource.getSymbolsList());
 
         operationChoose();
     }
@@ -58,23 +58,24 @@ public class ForexApp {
                 getHistory();
                 ifExit();
                 break;
-            default: operationChoose();
+            default:
+                operationChoose();
         }
     }
 
-    private void getPairById() {
+    private void getPairById() throws IOException {
         // считать id с консоли
         // вызвать dataSource.getPairById
         // распечатать результат
         ioService.write("Введите id пары валют, н-р 1815");
-        Integer id = ioService.readInt();
-        List<CurrencyPair> currencyPairs = dataSource.getPairById(id);
+        String id = (String) ioService.read();
+        List<CurrencyPair> currencyPairs = dataSource.getPairById(Integer.valueOf(id));
         ioService.write(currencyPairs.toString());
     }
 
     private void getPairBySymbol() throws IOException {
         ioService.write("Введите символьное выражение пары валют, н-р USD/EUR");
-        String input = ioService.read();
+        String input = (String) ioService.read();
         Symbol symbol = new Symbol();
         symbol.setSymbol(input);
         List<CurrencyPair> currencyPairs = dataSource.getPairBySymbol(symbol);
@@ -88,22 +89,20 @@ public class ForexApp {
 
     private void getHistory() throws IOException {
         ioService.write("Введите символьное выражение пары валют, н-р USD/EUR");
-        String input = ioService.read();
+        String input = (String) ioService.read();
         Symbol symbol = new Symbol();
         symbol.setSymbol(input);
 
         ioService.write("Введите длину периода, н-р 1, 2, или 10");
-        Integer length = ioService.readInt();
+        Integer length = (Integer) ioService.read();
 
         ioService.write("Введите единицу измерения периода: минута - m, час - h, день - d, неделя - w, месяц - month");
-        String periodString = ioService.read();
+        String periodString = (String) ioService.read();
         Period period = Period.fromString(periodString);
 
         Collection<History> histories = dataSource.getHistory(symbol, length, period);
         ioService.write(histories.toString());
     }
-
-
 
 
     private void ifExit() {
@@ -121,7 +120,7 @@ public class ForexApp {
     private int readOperation() {
         String operation;
         try {
-            if (!(operation = ioService.read()).equals("exit")) {
+            if (!(operation = (String) ioService.read()).equals("exit")) {
                 Integer operationNumber = Integer.parseInt(operation);
                 return operationNumber;
             }

@@ -2,10 +2,10 @@ package service;
 
 import java.io.IOException;
 
-public interface IOService {
-    String read() throws IOException;
+public interface IOService <T>{
+    T read() throws IOException;
     void write(String message);
     void writeUnknownError();
-    public int readInt();
+    //public T readInt();
 
 }

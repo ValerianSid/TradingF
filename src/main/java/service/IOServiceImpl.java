@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class IOServiceImpl implements IOService {
 
-    private BufferedReader reader;
+    private final BufferedReader reader;
 
     public IOServiceImpl() {
         reader = new BufferedReader(new InputStreamReader(System.in));
@@ -16,15 +16,7 @@ public class IOServiceImpl implements IOService {
         return reader.readLine();
     }
 
-    public int readInt() {
-        try {
-            return Integer.parseInt(read());
-        } catch (IOException e) {
-            writeUnknownError();
-            return readInt();
-        }
-    }
-
+    @Override
     public void write(String message) {
         System.out.println(message);
     }
