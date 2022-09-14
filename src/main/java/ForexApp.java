@@ -3,8 +3,8 @@ import model.CurrencyPair;
 import model.Symbol;
 import model.history.History;
 import model.history.Period;
-import service.IOService;
-import service.IOServiceImpl;
+import services.IOService;
+import services.IOServiceImpl;
 
 import java.io.IOException;
 import java.util.Collection;
