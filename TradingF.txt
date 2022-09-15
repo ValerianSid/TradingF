@@ -1,0 +1,35 @@
+Создаем три класса:
+1. User
+	Переменные:
+	- String userName;
+	- Wallet;
+	Варианты развития:
+	- Добавляем поля логин и пароль, создаем методы для проверки правильности их ввода;
+	- Добавляем метод для создания нового пользователя;
+	
+2. Wallet
+	Переменные:
+	- String currency;
+	- AccountHistory;
+	- Map < String, List<>>; ( currency, List<AccountHistory>)
+	Методы:
+	- createNewAccount;
+	- viewBalance;
+	- exchange;
+	- addMoney;
+	- withdrawMoney;
+	
+3. AccountHistory
+	Переменные:
+	- float balance;
+	- localdatetime;
+	- operationType; (тут используем enum по типу операции ( createNewAccount, viewBalance, exchange, addMoney, withdrawMoney))
+	- float balanceChanging;
+	Методы:
+	- переопределяем метод toString();
+Создаем интерфейс:
+1. IOService
+	- Вывод на экран;
+	- Считываем данные с командной строки (отдельные методы для типов данных float, String, int);
+Создаем класс Manager:
+Используем этот класс для управления остальными и отлавливания ошибок. Возможно здесь будет весь код по работе с пользователем.
