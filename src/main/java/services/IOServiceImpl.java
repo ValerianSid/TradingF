@@ -18,7 +18,23 @@ public class IOServiceImpl implements IOService {
         return reader.readLine();
     }
 
-    @Override
+    public int readInt() {
+        try {
+            return Integer.parseInt(read());
+        } catch (IOException e) {
+            writeUnknownError();
+            return readInt();
+        }
+    }
+    public float readFloat() {
+        try {
+            return Float.parseFloat(read());
+        } catch (IOException e) {
+            writeUnknownError();
+            return readInt();
+        }
+    }
+
     public void write(String message) {
         System.out.println(message);
     }
