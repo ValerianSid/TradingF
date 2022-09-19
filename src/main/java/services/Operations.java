@@ -4,12 +4,7 @@ import objects.AccountHistory;
 
 public enum Operations {
     EXIT,
-    WIEWBALANCE{
-        public String viewBalance() {
-            AccountHistory accountHistory = new AccountHistory();
-            return ("У Вас на счету " + (accountHistory.getBalance()));
-        }
-    },
+    WIEWBALANCE,
     MANYTRANSFER,
     ADDACCOUNT,
     CASHWITHDRAWAL,

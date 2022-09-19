@@ -19,8 +19,7 @@ public class IOServiceImpl implements IOService {
     }
     public Operations readOp() {
         try {
-            String s = reader.readLine();
-            return Operations.values()[Integer.parseInt(s)];
+            return Operations.values()[Integer.parseInt(read())];
         } catch (IOException | ArrayIndexOutOfBoundsException e) {
             write("Произошла Ошибка. Повторите ввод");
             return readOp();

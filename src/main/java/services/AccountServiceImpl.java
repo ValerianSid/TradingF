@@ -3,6 +3,8 @@ package services;
 import exсeption.NoEnoughMoneyException;
 import objects.AccountHistory;
 
+import java.io.IOException;
+
 public class AccountServiceImpl implements AccountService {
     private final AccountHistory accountHistory;
     private final IOService ioService;
@@ -13,11 +15,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String viewBalance() {
+    public String viewBalance() throws IOException {
         if (accountHistory.getBalance() == 0) {
-            ioService.write("На счету 0! Желаете пополнить?");
+            ioService.write("На счету "+accountHistory.getBalance()+ " Желаете пополнить? y/n");
+            if(ioService.read().equalsIgnoreCase("y")){
+                ioService.write("Сумма :");
+            }
             accountHistory.setBalance(ioService.readFloat());
-            ioService.write("your balance"+accountHistory.getBalance());
+            viewBalance();
+
         }
         return ("У Вас на счету " + (accountHistory.getBalance()));
     }
@@ -38,8 +44,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public float exchange(float amount, float curr) {
-        return amount*curr;
+    public String exchange(float amount, float curr) {
+        return "Итого" + (amount*curr);
     }
 
     @Override

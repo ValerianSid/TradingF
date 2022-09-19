@@ -88,10 +88,11 @@ public class ForexApp {
             case EXIT:
                 break;
             case WIEWBALANCE:
-                accountService.viewBalance();
+                ioService.write(accountService.viewBalance());
                 break;
             case EXCHANGE:
-                accountService.exchange(ioService.readFloat(), ioService.readFloat());
+                //accountService.exchange(200, 2.5f);
+                ioService.write(accountService.exchange(200,2.5f));
                 break;
             case MANYTRANSFER:
                 //accountService.moneyTransfer(int);
@@ -153,7 +154,8 @@ public class ForexApp {
         ioService.write("Желаете ли продолжить? y/n");
         try {
             if (ioService.read().equalsIgnoreCase("y")) {
-                operationChoose();
+                startMenu();
+                infoChoose();
             }
         } catch (IOException e) {
             ioService.writeUnknownError();
