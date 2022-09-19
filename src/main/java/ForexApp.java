@@ -1,10 +1,10 @@
 import data.DataSource;
+import exсeption.NoEnoughMoneyException;
 import model.CurrencyPair;
 import model.Symbol;
 import model.history.History;
 import model.history.Period;
-import services.IOService;
-import services.IOServiceImpl;
+import services.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -14,36 +14,50 @@ public class ForexApp {
 
     private final DataSource dataSource;
     private final IOService ioService;
+    private final AccountService accountService;
 
     public ForexApp() {
         this.dataSource = new DataSource();
         this.ioService = new IOServiceImpl();
+        this.accountService = new AccountServiceImpl();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoEnoughMoneyException {
         ForexApp forexApp = new ForexApp();
         forexApp.run();
     }
 
-    public void run() throws IOException {
-//        Symbol s = new Symbol();
-//        s.setSymbol("EUR/USD");
-//        System.out.println(dataSource.getSymbolsList());
-
-        operationChoose();
+    public void run() throws IOException, NoEnoughMoneyException {
+        startMenu();
+        infoChoose();
     }
 
-    private void operationChoose() throws IOException {
+    private void startMenu() {
         ioService.write("Выберите операцию:");
         ioService.write("Наберите 1 чтобы получить текущий курс пары валют по числовому id");
         ioService.write("Наберите 2 чтобы получить текущий курс пары валют по символьному выражению пары");
         ioService.write("Наберите 3 чтобы получить список символьных выражений, содержащих в т.ч. числовые id, всех пар валют");
         ioService.write("Наберите 4 чтобы получить историю изменений пары валют за последний период времени");
+        ioService.write("Наберите 5 для перехода в меню Операций");
         ioService.write("Введите 'exit' для выхода");
+    }
+
+    private void operationMenu() {
+        ioService.write("Выберите операцию:");
+        ioService.write("Наберите 1 для просмотра баланса");
+        ioService.write("Наберите 2 для обмена");
+        ioService.write("Наберите 3 для перевода");
+        ioService.write("Наберите 4 для снятия наличных");
+        ioService.write("Наберите 5 для создания нового аккаунта(счета)");
+        ioService.write("Введите 'exit' для выхода");
+    }
+
+    private void infoChoose() throws IOException, NoEnoughMoneyException {
         int operation = readOperation();
         switch (operation) {
             case 1:
                 getPairById();
+                operationMenu();
                 ifExit();
                 break;
             case 2:
@@ -57,6 +71,36 @@ public class ForexApp {
             case 4:
                 getHistory();
                 ifExit();
+                break;
+            case 5:
+                operationMenu();
+                operationChoose();
+                ifExit();
+                break;
+            default:
+                infoChoose();
+        }
+    }
+
+    private void operationChoose() throws IOException, NoEnoughMoneyException {
+        Operations operation = ioService.readOp();
+        switch (operation) {
+            case EXIT:
+                break;
+            case WIEWBALANCE:
+                accountService.viewBalance();
+                break;
+            case EXCHANGE:
+                accountService.exchange(ioService.readFloat(), ioService.readFloat());
+                break;
+            case MANYTRANSFER:
+                //accountService.moneyTransfer(int);
+                break;
+            case CASHWITHDRAWAL:
+                //accountService.cashWithDrawal();
+                break;
+            case ADDACCOUNT:
+                //accountService.addAccount();
                 break;
             default:
                 operationChoose();
@@ -108,14 +152,17 @@ public class ForexApp {
     private void ifExit() {
         ioService.write("Желаете ли продолжить? y/n");
         try {
-            if (ioService.read().equals("y")) {
+            if (ioService.read().equalsIgnoreCase("y")) {
                 operationChoose();
             }
         } catch (IOException e) {
             ioService.writeUnknownError();
             ifExit();
+        } catch (NoEnoughMoneyException e) {
+            e.printStackTrace();
         }
     }
+
 
     private int readOperation() {
         String operation;

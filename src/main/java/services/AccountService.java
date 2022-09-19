@@ -3,12 +3,13 @@ package services;
 import exсeption.NoEnoughMoneyException;
 
 public interface AccountService {
-    String viewBalance();//просмотр баланса
+    String viewBalance() throws NoEnoughMoneyException;//просмотр баланса
 
-    String moneyTransfer(int ammount, String account) throws NoEnoughMoneyException;//денежный перевод
+    String moneyTransfer(int amount, String account) throws NoEnoughMoneyException;//денежный перевод
 
-    String addAccount(int ammount);//пополнение счета
+    String addAccount(int amount);//пополнение счета
+    float exchange(float amount, float curr);// обмен
 
-    void cashWithDrawal(int ammount) throws NoEnoughMoneyException;//снятие наличных
+    void cashWithDrawal(int amount) throws NoEnoughMoneyException;//снятие наличных
     void newAccount(String name,String password);
 }

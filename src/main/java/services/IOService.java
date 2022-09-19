@@ -8,6 +8,7 @@ public interface IOService {
     float readFloat();
     void write(String message);
     void writeUnknownError();
+    Operations readOp();
 
 
 }

@@ -3,6 +3,7 @@ package services;
 import objects.AccountHistory;
 
 public enum Operations {
+    EXIT,
     WIEWBALANCE{
         public String viewBalance() {
             AccountHistory accountHistory = new AccountHistory();
