@@ -8,15 +8,10 @@ public class IOServiceImpl implements IOService {
 
     BufferedReader reader;
     @Override
-    public String read(){
+    public String read() throws IOException {
         reader = new BufferedReader(new InputStreamReader(System.in));
         String inputString = new String();
-        try{
-            inputString = reader.readLine();
-        } catch (IOException e) {
-            write("Произошла ошибка ввода информации. Попробуйте снова");
-            read();
-        }
+        inputString = reader.readLine();
         return inputString;
     }
 

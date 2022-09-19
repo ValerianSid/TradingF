@@ -4,6 +4,6 @@ import java.io.IOException;
 
 public interface IOService {
 
-    String read();
+    String read() throws IOException;
     void write(String message);
 }
