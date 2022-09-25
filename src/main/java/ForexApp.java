@@ -6,6 +6,8 @@ import model.history.History;
 import model.history.Period;
 import services.*;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -92,7 +94,7 @@ public class ForexApp {
                 break;
             case EXCHANGE:
                 //accountService.exchange(200, 2.5f);
-                ioService.write(accountService.exchange(200,2.5f));
+                ioService.write(accountService.exchange(200, 2.5f));
                 break;
             case MANYTRANSFER:
                 //accountService.moneyTransfer(int);
@@ -108,14 +110,21 @@ public class ForexApp {
         }
     }
 
-    private void getPairById() throws IOException {
+    private void getPairById() {
+        JFrame frame=new JFrame("Get Pair ID");
+        JTextField field=new JTextField();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,500);
+        frame.setVisible(true);
+        frame.add(field);
         // считать id с консоли
         // вызвать dataSource.getPairById
         // распечатать результат
-        ioService.write("Введите id пары валют, н-р 1815");
-        String id = ioService.read();
-        List<CurrencyPair> currencyPairs = dataSource.getPairById(Integer.valueOf(id));
-        ioService.write(currencyPairs.toString());
+        String strInp = JOptionPane.showInputDialog(frame, "Введите id пары валют, н-р 1815", null);
+
+        List<CurrencyPair> currencyPairs = dataSource.getPairById(Integer.valueOf(strInp));
+        //JOptionPane.showMessageDialog(frame,currencyPairs);
+        field.setText(String.valueOf(currencyPairs));
     }
 
     private void getPairBySymbol() throws IOException {
@@ -157,6 +166,7 @@ public class ForexApp {
                 startMenu();
                 infoChoose();
             }
+            else {System.exit(0);}
         } catch (IOException e) {
             ioService.writeUnknownError();
             ifExit();
