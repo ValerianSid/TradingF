@@ -43,7 +43,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                ForexApp
+                                manager.ForexApp
                             </mainClass>
                         </manifest>
                     </archive>

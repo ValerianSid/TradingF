@@ -1,3 +1,5 @@
+package manager;
+
 import data.DataSource;
 import exсeption.NoEnoughMoneyException;
 import model.CurrencyPair;
@@ -24,10 +26,7 @@ public class ForexApp {
         this.accountService = new AccountServiceImpl();
     }
 
-    public static void main(String[] args) throws IOException, NoEnoughMoneyException {
-        ForexApp forexApp = new ForexApp();
-        forexApp.run();
-    }
+
 
     public void run() throws IOException, NoEnoughMoneyException {
         startMenu();

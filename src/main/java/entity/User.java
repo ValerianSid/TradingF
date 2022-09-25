@@ -2,6 +2,7 @@ package entity;
 
 public class User {
     String name;
+
     Wallet wallet;
 
     public User(String name, Wallet wallet) {
