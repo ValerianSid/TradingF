@@ -14,8 +14,10 @@ import model.Symbol;
 import model.history.History;
 import model.history.Period;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class DataSource {
 
@@ -87,4 +89,13 @@ public class DataSource {
             throw new ConnectionException(e.getMessage(), e);
         }
     }
+    // разделяем пару на отдельные валюты
+    public Stream<String> getCurrencyNames(){
+        return getSymbolsList()
+                .stream()
+                .flatMap(pair-> Arrays.stream(pair.getSymbol().split("/").clone()))
+                .distinct();// убирает дубликаты
+
+    }
+
 }

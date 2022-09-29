@@ -1,59 +1,55 @@
 package entity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Wallet {
-    String login;
-    String password;
-    private String currency;
-    private float accountState;
-    private Map<String, Float> accountStateMap; // <название валюты, состояние счета>
-    private List<AccountHistory> accountHistoryList;
+    private UUID id;
+    private Currency currency;
+    private Float amount;
+    private User user;
+    //private Map<String, Float> accountStateMap; // <название валюты, состояние счета>
+    //private List<AccountHistory> accountHistoryList;
 
-    public Wallet(String login, String password) {
+    public Wallet(UUID id, Currency currency, Float amount, User user) {
+        this.id = id;
         this.currency = currency;
-        this.accountState = accountState;
-        this.accountStateMap = new HashMap<>();
-        accountStateMap.put(currency, accountState);
-        this.login=login;
-        this.password=password;
+        this.amount = amount;
+        this.user = user;
     }
 
-    public String getLogin() {
-        return login;
+
+    public UUID getId() {
+        return id;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCurrency() {
+    public Currency getCurreny() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+
+    public Float getAmount() {
+        return amount;
     }
 
-    public List<AccountHistory> getAccountHistoryList() {
-        return accountHistoryList;
+    public void setAmount(Float amount) {
+        this.amount = amount;
     }
 
-    public void setAccountHistoryList(List<AccountHistory> accountHistoryList) {
-        this.accountHistoryList = accountHistoryList;
+    public User getUser() {
+        return user;
     }
 
-    public Map<String, Float> getAccountStateMap() {
-        return accountStateMap;
+    public Float addAmount(Float amount) {
+        this.amount += amount;
+        return amount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Wallet) {
+            return this.id.equals(((Wallet) o).getId());
+        }
+        return super.equals(o);
+    }
+
 }
