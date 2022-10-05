@@ -13,12 +13,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class AuthorizationServiceImpl implements AuthorizationService{
-    private IOServiceNew ioService;
+    private IOService ioService;
     private DataSource data;
     private Session session;
 
     public AuthorizationServiceImpl() {
-        this.ioService = new IOServiceNew();
+        this.ioService = new IOService();
         this.data = new DataSource();
         this.session = new Session();
     }

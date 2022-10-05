@@ -11,7 +11,7 @@ public class WalletServiceImpl implements WalletService {
 
     public WalletServiceImpl() {
         this.wallet = wallet;
-        this.ioService = new IOServiceImpl();
+        this.ioService = new IOService();
     }
 
     @Override
@@ -23,7 +23,7 @@ public class WalletServiceImpl implements WalletService {
             if(ioService.read().equalsIgnoreCase("y")){
                 ioService.write("Сумма :");
             }
-            wallet.setAmount(ioService.readFloat());
+            wallet.setAmount(Float.valueOf(ioService.read()));
             viewBalance();
 
         }

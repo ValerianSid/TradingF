@@ -22,7 +22,7 @@ public class ForexApp {
 
     public ForexApp() {
         this.dataSource = new DataSource();
-        this.ioService = new IOServiceImpl();
+        this.ioService = new IOService();
         this.walletService = new WalletServiceImpl();
         this.authorizationService = new AuthorizationServiceImpl();
     }
@@ -75,7 +75,6 @@ public class ForexApp {
                 break;
             case 5:
                 logIn();
-                operationMenu();
                 operationChoose();
                 ifExit();
                 break;
@@ -85,7 +84,7 @@ public class ForexApp {
     }
 
     private void operationChoose() throws IOException, NoEnoughMoneyException {
-        Operations operation = ioService.readOp();
+        Operations operation = Operations.valueOf(ioService.read());
         switch (operation) {
             case EXIT:
                 break;
@@ -184,7 +183,7 @@ public class ForexApp {
                 System.exit(0);
             }
         } catch (IOException e) {
-            ioService.writeUnknownError();
+            ioService.write("Не известная ошибка");
             ifExit();
         } catch (NoEnoughMoneyException e) {
             e.printStackTrace();
@@ -199,7 +198,7 @@ public class ForexApp {
                 return Integer.parseInt(operation);
             }
         } catch (IOException e) {
-            ioService.writeUnknownError();
+            ioService.write("Не известная ошибка");
             readOperation();
         }
         return 0;
