@@ -10,13 +10,12 @@ import model.history.Period;
 import services.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 public class ForexApp {
-private AuthorizationServiceImpl authorizationService;
+    private AuthorizationServiceImpl authorizationService;
     private final DataSource dataSource;
     private final IOService ioService;
     private final WalletService walletService;
@@ -25,7 +24,7 @@ private AuthorizationServiceImpl authorizationService;
         this.dataSource = new DataSource();
         this.ioService = new IOServiceImpl();
         this.walletService = new WalletServiceImpl();
-        this.authorizationService=new AuthorizationServiceImpl();
+        this.authorizationService = new AuthorizationServiceImpl();
     }
 
 
@@ -110,12 +109,18 @@ private AuthorizationServiceImpl authorizationService;
                 operationChoose();
         }
     }
-    private void logIn()  {
+
+    private void logIn() {
         try {
-            authorizationService.logIn("1","1","1");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FileSaveException e) {
+            ioService.write("Введите логин");
+            String log = ioService.read();
+            ioService.write("Введите пароль");
+            String pas = ioService.read();
+            ioService.write("Повторите пароль");
+            String pasT = ioService.read();
+
+            authorizationService.logIn(log, pas, pasT);
+        } catch (IOException | FileSaveException e) {
             e.printStackTrace();
         }
     }

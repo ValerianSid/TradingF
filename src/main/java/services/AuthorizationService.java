@@ -1,6 +1,5 @@
 package services;
 
-import entity.User;
 import exсeption.FileSaveException;
 import exсeption.NoEnoughMoneyException;
 import exсeption.WrongLoginException;
@@ -10,7 +9,7 @@ import java.io.IOException;
 
 
 public interface AuthorizationService {
-    User logIn(String login, String Password, String repPassword) throws WrongLoginException, IOException, FileSaveException;
+    void logIn(String login, String Password, String repPassword) throws WrongLoginException, IOException, FileSaveException;
 
     void logOut(ForexApp menu) throws NoEnoughMoneyException, IOException;
 }

@@ -23,8 +23,8 @@ public class UserReader {
         throw new IOException("Пользователь " + login + "не найден");
     }
 
-    public boolean chkUserExist(String login) {
-        File file = new File(System.getProperty("user.home" +File.separator+ login + ".json"));
+    public static boolean chkUserExist(String login) {
+        File file = new File("C:\\Users\\anton\\OneDrive\\JAVA\\TradingF\\Users\\");
                return Arrays.stream(
                       file.listFiles((dir, name) -> name.substring(0, name.lastIndexOf(".json")).equals(login)))
                 .findFirst()

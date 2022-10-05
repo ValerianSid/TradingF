@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
-public class AuthorizationServiceImpl {
+public class AuthorizationServiceImpl implements AuthorizationService{
     private IOServiceNew ioService;
     private DataSource data;
     private Session session;
@@ -23,7 +23,7 @@ public class AuthorizationServiceImpl {
         this.session = new Session();
     }
 
-
+@Override
     public void logIn(String login, String password, String repPassword) throws WrongLoginException, IOException, FileSaveException {
         String log = Optional.ofNullable(login)
                 .orElseThrow(() -> new WrongLoginException("Не заполнен логин"));
@@ -32,7 +32,7 @@ public class AuthorizationServiceImpl {
         String repPasw = Optional.ofNullable(repPassword)
                 .orElseThrow(() -> new WrongLoginException("Повторите пароль"));
         if (!pasw.equals(repPasw)) throw new WrongLoginException("Пароли не совпадают");
-        //if (ioService.chkUserExist(login)) throw new WrongLoginException("Пользователь " + login + "уже существует");
+        if (UserReader.chkUserExist(log)) throw new WrongLoginException("Пользователь " + login + " уже существует");
         String byScriptHash = BCrypt
                 .withDefaults()
                 .hashToString(12,pasw.toCharArray());
@@ -40,10 +40,10 @@ public class AuthorizationServiceImpl {
         User user=new User(uuid,log,byScriptHash);
         ioService.write(String.valueOf(user));
         ioService.save(user);
-        //return user;
+
     }
 
-
+@Override
     public void logOut(ForexApp menu) throws NoEnoughMoneyException, IOException {
         menu.run();
 
