@@ -4,7 +4,7 @@ import exсeption.NoEnoughMoneyException;
 
 import java.io.IOException;
 
-public interface AccountService {
+public interface WalletService {
     String viewBalance() throws NoEnoughMoneyException, IOException;//просмотр баланса
 
     String moneyTransfer(int amount, String account) throws NoEnoughMoneyException;//денежный перевод

@@ -1,6 +1,7 @@
 package manager;
 
 import data.DataSource;
+import exсeption.FileSaveException;
 import exсeption.NoEnoughMoneyException;
 import model.CurrencyPair;
 import model.Symbol;
@@ -9,28 +10,33 @@ import model.history.Period;
 import services.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 public class ForexApp {
-
+    private AuthorizationServiceImpl authorizationService;
     private final DataSource dataSource;
-    private final IOService ioService;
-    private final AccountService accountService;
+    private final IOServiceNew ioService;
+    private final WalletService accountService;
 
     public ForexApp() {
         this.dataSource = new DataSource();
-        this.ioService = new IOServiceImpl();
-        this.accountService = new AccountServiceImpl();
-    }
+        this.ioService = new IOServiceNew();
+        this.accountService = new WalletServiceImpl();
+        this.authorizationService = new AuthorizationServiceImpl();
 
+
+    }
 
 
     public void run() throws IOException, NoEnoughMoneyException {
         startMenu();
-        infoChoose();
+        try {
+            infoChoose();
+        } catch (FileSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void startMenu() {
@@ -53,7 +59,7 @@ public class ForexApp {
         ioService.write("Введите 'exit' для выхода");
     }
 
-    private void infoChoose() throws IOException, NoEnoughMoneyException {
+    private void infoChoose() throws IOException, NoEnoughMoneyException, FileSaveException {
         int operation = readOperation();
         switch (operation) {
             case 1:
@@ -74,6 +80,7 @@ public class ForexApp {
                 ifExit();
                 break;
             case 5:
+                logIn();
                 operationMenu();
                 operationChoose();
                 ifExit();
@@ -84,7 +91,7 @@ public class ForexApp {
     }
 
     private void operationChoose() throws IOException, NoEnoughMoneyException {
-        Operations operation = ioService.readOp();
+        Operations operation = Operations.valueOf(ioService.readInput());
         switch (operation) {
             case EXIT:
                 break;
@@ -93,7 +100,7 @@ public class ForexApp {
                 break;
             case EXCHANGE:
                 //accountService.exchange(200, 2.5f);
-                ioService.write(accountService.exchange(200, 2.5f));
+                //ioService.write(accountService.exchange(200, 2.5f));
                 break;
             case MANYTRANSFER:
                 //accountService.moneyTransfer(int);
@@ -102,18 +109,27 @@ public class ForexApp {
                 //accountService.cashWithDrawal();
                 break;
             case ADDACCOUNT:
-                //accountService.addAccount();
+                //logIn();
                 break;
             default:
                 operationChoose();
         }
     }
 
+    private void logIn() throws IOException {
+        try {
+            authorizationService.logIn("1", "123", "123");
+        } catch (FileSaveException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private void getPairById() {
-        JFrame frame=new JFrame("Get Pair ID");
-        JTextField field=new JTextField();
+        JFrame frame = new JFrame("Get Pair ID");
+        JTextField field = new JTextField();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
+        frame.setSize(500, 500);
         frame.setVisible(true);
         frame.add(field);
         // считать id с консоли
@@ -128,7 +144,7 @@ public class ForexApp {
 
     private void getPairBySymbol() throws IOException {
         ioService.write("Введите символьное выражение пары валют, н-р USD/EUR");
-        String input = ioService.read();
+        String input = ioService.readInput();
         Symbol symbol = new Symbol();
         symbol.setSymbol(input);
         List<CurrencyPair> currencyPairs = dataSource.getPairBySymbol(symbol);
@@ -142,15 +158,15 @@ public class ForexApp {
 
     private void getHistory() throws IOException {
         ioService.write("Введите символьное выражение пары валют, н-р USD/EUR");
-        String input = ioService.read();
+        String input = ioService.readInput();
         Symbol symbol = new Symbol();
         symbol.setSymbol(input);
 
         ioService.write("Введите длину периода, н-р 1, 2, или 10");
-        int length = Integer.parseInt(ioService.read());
+        int length = Integer.parseInt(ioService.readInput());
 
         ioService.write("Введите единицу измерения периода: минута - m, час - h, день - d, неделя - w, месяц - month");
-        String periodString = ioService.read();
+        String periodString = ioService.readInput();
         Period period = Period.fromString(periodString);
 
         Collection<History> histories = dataSource.getHistory(symbol, length, period);
@@ -160,29 +176,29 @@ public class ForexApp {
 
     private void ifExit() {
         ioService.write("Желаете ли продолжить? y/n");
+
         try {
-            if (ioService.read().equalsIgnoreCase("y")) {
+            if (ioService.readInput().equalsIgnoreCase("y")) {
                 startMenu();
                 infoChoose();
             }
-            else {System.exit(0);}
         } catch (IOException e) {
-            ioService.writeUnknownError();
-            ifExit();
+            throw new RuntimeException(e);
         } catch (NoEnoughMoneyException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (FileSaveException e) {
+            throw new RuntimeException(e);
         }
     }
-
 
     private int readOperation() {
         String operation;
         try {
-            if (!(operation = ioService.read()).equals("exit")) {
+            if (!(operation = ioService.readInput()).equals("exit")) {
                 return Integer.parseInt(operation);
             }
         } catch (IOException e) {
-            ioService.writeUnknownError();
+            ioService.write("");
             readOperation();
         }
         return 0;

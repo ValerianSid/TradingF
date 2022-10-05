@@ -16,6 +16,7 @@ public class Wallet {
         this.amount = amount;
         this.user = user;
     }
+    public Wallet(){};
 
 
     public UUID getId() {

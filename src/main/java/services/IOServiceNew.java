@@ -20,13 +20,14 @@ public class IOServiceNew {
         this.terminal = new BufferedReader(new InputStreamReader(System.in));
         this.processor = new UserWriter();
         this.objectMapper = new ProjectObjectMapper();
+        this.reader=new UserReader();
     }
 
     public String readInput() throws IOException {
         return this.terminal.readLine();
     }
 
-    public void save(User user) throws IOException, FileSaveException {
+    public void save(User user) throws  FileSaveException {
         try {
             String json = objectMapper.writeValueAsString(user);
             BufferedWriter writer = processor.getWritter(user);
@@ -36,7 +37,7 @@ public class IOServiceNew {
             throw new FileSaveException(e.getMessage());
         }
     }
-    public void msg (String msg){
+    public void write (String msg){
         System.out.println(msg);
     }
     public boolean chkUserExist(String login){return reader.chkUserExist(login);}

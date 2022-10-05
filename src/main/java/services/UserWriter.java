@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class UserWriter implements FileWritterProcessor<User> {
     @Override
-    public BufferedWriter getWritter(User obj) throws IOException {
-        File file =new File("classpath:/users/"+obj.getName()+".json");
+    public BufferedWriter getWritter(User user) throws IOException {
+        File file =new File("classpath:/users/"+ user.getName() + ".json");
         return new BufferedWriter(new FileWriter(file));
     }
 }

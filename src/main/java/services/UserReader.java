@@ -24,9 +24,9 @@ public class UserReader {
     }
 
     public boolean chkUserExist(String login) {
-        File file = new File("classpath:/users");
-        return Arrays.stream(
-                        file.listFiles((dir, name) -> name.substring(0, name.lastIndexOf(".json")).equals(login)))
+        File file = new File("claspath:/users/");
+               return Arrays.stream(
+                      file.listFiles((dir, name) -> name.substring(0, name.lastIndexOf(".json")).equals(login)))
                 .findFirst()
                 .isPresent();
 
