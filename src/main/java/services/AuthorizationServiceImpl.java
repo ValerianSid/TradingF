@@ -24,7 +24,7 @@ public class AuthorizationServiceImpl {
     }
 
 
-    public User logIn(String login, String password, String repPassword) throws WrongLoginException, IOException, FileSaveException {
+    public void logIn(String login, String password, String repPassword) throws WrongLoginException, IOException, FileSaveException {
         String log = Optional.ofNullable(login)
                 .orElseThrow(() -> new WrongLoginException("Не заполнен логин"));
         String pasw = Optional.ofNullable(password)
@@ -40,7 +40,7 @@ public class AuthorizationServiceImpl {
         User user=new User(uuid,log,byScriptHash);
         ioService.write(String.valueOf(user));
         ioService.save(user);
-        return user;
+        //return user;
     }
 
 

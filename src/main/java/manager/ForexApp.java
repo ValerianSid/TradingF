@@ -10,33 +10,28 @@ import model.history.Period;
 import services.*;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 public class ForexApp {
-    private AuthorizationServiceImpl authorizationService;
+private AuthorizationServiceImpl authorizationService;
     private final DataSource dataSource;
-    private final IOServiceNew ioService;
-    private final WalletService accountService;
+    private final IOService ioService;
+    private final WalletService walletService;
 
     public ForexApp() {
         this.dataSource = new DataSource();
-        this.ioService = new IOServiceNew();
-        this.accountService = new WalletServiceImpl();
-        this.authorizationService = new AuthorizationServiceImpl();
-
-
+        this.ioService = new IOServiceImpl();
+        this.walletService = new WalletServiceImpl();
+        this.authorizationService=new AuthorizationServiceImpl();
     }
 
 
     public void run() throws IOException, NoEnoughMoneyException {
         startMenu();
-        try {
-            infoChoose();
-        } catch (FileSaveException e) {
-            throw new RuntimeException(e);
-        }
+        infoChoose();
     }
 
     private void startMenu() {
@@ -59,7 +54,7 @@ public class ForexApp {
         ioService.write("Введите 'exit' для выхода");
     }
 
-    private void infoChoose() throws IOException, NoEnoughMoneyException, FileSaveException {
+    private void infoChoose() throws IOException, NoEnoughMoneyException {
         int operation = readOperation();
         switch (operation) {
             case 1:
@@ -91,39 +86,39 @@ public class ForexApp {
     }
 
     private void operationChoose() throws IOException, NoEnoughMoneyException {
-        Operations operation = Operations.valueOf(ioService.readInput());
+        Operations operation = ioService.readOp();
         switch (operation) {
             case EXIT:
                 break;
             case WIEWBALANCE:
-                ioService.write(accountService.viewBalance());
+                ioService.write(walletService.viewBalance());
                 break;
             case EXCHANGE:
-                //accountService.exchange(200, 2.5f);
-                //ioService.write(accountService.exchange(200, 2.5f));
+
+                ioService.write(walletService.exchange(200, 2.5f));
                 break;
             case MANYTRANSFER:
-                //accountService.moneyTransfer(int);
+
                 break;
             case CASHWITHDRAWAL:
-                //accountService.cashWithDrawal();
+
                 break;
             case ADDACCOUNT:
-                //logIn();
+
                 break;
             default:
                 operationChoose();
         }
     }
-
-    private void logIn() throws IOException {
+    private void logIn()  {
         try {
-            authorizationService.logIn("1", "123", "123");
+            authorizationService.logIn("1","1","1");
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (FileSaveException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
-
 
     private void getPairById() {
         JFrame frame = new JFrame("Get Pair ID");
@@ -144,7 +139,7 @@ public class ForexApp {
 
     private void getPairBySymbol() throws IOException {
         ioService.write("Введите символьное выражение пары валют, н-р USD/EUR");
-        String input = ioService.readInput();
+        String input = ioService.read();
         Symbol symbol = new Symbol();
         symbol.setSymbol(input);
         List<CurrencyPair> currencyPairs = dataSource.getPairBySymbol(symbol);
@@ -158,15 +153,15 @@ public class ForexApp {
 
     private void getHistory() throws IOException {
         ioService.write("Введите символьное выражение пары валют, н-р USD/EUR");
-        String input = ioService.readInput();
+        String input = ioService.read();
         Symbol symbol = new Symbol();
         symbol.setSymbol(input);
 
         ioService.write("Введите длину периода, н-р 1, 2, или 10");
-        int length = Integer.parseInt(ioService.readInput());
+        int length = Integer.parseInt(ioService.read());
 
         ioService.write("Введите единицу измерения периода: минута - m, час - h, день - d, неделя - w, месяц - month");
-        String periodString = ioService.readInput();
+        String periodString = ioService.read();
         Period period = Period.fromString(periodString);
 
         Collection<History> histories = dataSource.getHistory(symbol, length, period);
@@ -176,29 +171,30 @@ public class ForexApp {
 
     private void ifExit() {
         ioService.write("Желаете ли продолжить? y/n");
-
         try {
-            if (ioService.readInput().equalsIgnoreCase("y")) {
+            if (ioService.read().equalsIgnoreCase("y")) {
                 startMenu();
                 infoChoose();
+            } else {
+                System.exit(0);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ioService.writeUnknownError();
+            ifExit();
         } catch (NoEnoughMoneyException e) {
-            throw new RuntimeException(e);
-        } catch (FileSaveException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
+
 
     private int readOperation() {
         String operation;
         try {
-            if (!(operation = ioService.readInput()).equals("exit")) {
+            if (!(operation = ioService.read()).equals("exit")) {
                 return Integer.parseInt(operation);
             }
         } catch (IOException e) {
-            ioService.write("");
+            ioService.writeUnknownError();
             readOperation();
         }
         return 0;

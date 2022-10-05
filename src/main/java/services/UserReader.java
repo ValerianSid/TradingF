@@ -16,7 +16,7 @@ public class UserReader {
     }
 
     public User getUserFromFile(String login) throws IOException {
-        File file = new File("classpath:/users/" + login + ".json");
+        File file = new File("C:\\Users\\anton\\OneDrive\\JAVA\\TradingF\\Users\\" + login + ".json");
         if (file.exists()) {
             return objectMapper.readValue(file, User.class);
         }
@@ -24,7 +24,7 @@ public class UserReader {
     }
 
     public boolean chkUserExist(String login) {
-        File file = new File("claspath:/users/");
+        File file = new File(System.getProperty("user.home" +File.separator+ login + ".json"));
                return Arrays.stream(
                       file.listFiles((dir, name) -> name.substring(0, name.lastIndexOf(".json")).equals(login)))
                 .findFirst()

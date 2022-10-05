@@ -13,4 +13,3 @@ public class Session {
         this.currentUser = currentUser;
     }
 }
-

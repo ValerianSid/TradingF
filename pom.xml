@@ -78,7 +78,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                MyApplication
+                                Main
                             </mainClass>
                         </manifest>
                     </archive>
@@ -89,7 +89,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>MyApplication</mainClass>
+                    <mainClass>Main</mainClass>
                 </configuration>
             </plugin>
 

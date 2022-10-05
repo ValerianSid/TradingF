@@ -20,14 +20,13 @@ public class IOServiceNew {
         this.terminal = new BufferedReader(new InputStreamReader(System.in));
         this.processor = new UserWriter();
         this.objectMapper = new ProjectObjectMapper();
-        this.reader=new UserReader();
     }
 
     public String readInput() throws IOException {
         return this.terminal.readLine();
     }
 
-    public void save(User user) throws  FileSaveException {
+    public void save(User user) throws IOException, FileSaveException {
         try {
             String json = objectMapper.writeValueAsString(user);
             BufferedWriter writer = processor.getWritter(user);
