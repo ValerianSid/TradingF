@@ -9,7 +9,9 @@ import java.io.IOException;
 
 
 public interface AuthorizationService {
-    void logIn(String login, String Password, String repPassword) throws WrongLoginException, IOException, FileSaveException;
+    void logReg(String login, String Password, String repPassword) throws WrongLoginException, IOException, FileSaveException;
+
+    void logIn(String login, String password);
 
     void logOut(ForexApp menu) throws NoEnoughMoneyException, IOException;
 }

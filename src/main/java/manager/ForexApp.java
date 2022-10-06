@@ -38,8 +38,8 @@ public class ForexApp {
         ioService.write("Наберите 1 чтобы получить текущий курс пары валют по числовому id");
         ioService.write("Наберите 2 чтобы получить текущий курс пары валют по символьному выражению пары");
         ioService.write("Наберите 3 чтобы получить список символьных выражений, содержащих в т.ч. числовые id, всех пар валют");
-        ioService.write("Наберите 4 чтобы получить историю изменений пары валют за последний период времени");
-        ioService.write("Наберите 5 для перехода в меню Операций");
+        ioService.write("Наберите 4 чтобы войти в аккаунт");
+        ioService.write("Наберите 5 чтобы создать аккаунт");
         ioService.write("Введите 'exit' для выхода");
     }
 
@@ -70,12 +70,12 @@ public class ForexApp {
                 ifExit();
                 break;
             case 4:
-                getHistory();
+                logIn();
                 ifExit();
                 break;
             case 5:
-                logIn();
-                operationChoose();
+                logReg();
+                infoChoose();
                 ifExit();
                 break;
             default:
@@ -108,8 +108,18 @@ public class ForexApp {
                 operationChoose();
         }
     }
-
-    private void logIn() {
+private void logIn(){
+        try {
+            ioService.write("Введите логин");
+            String log=ioService.read();
+            ioService.write("Введите пароль");
+            String pass=ioService.read();
+            authorizationService.logIn(log,pass);
+        }catch (IOException  e) {
+            e.printStackTrace();
+        }
+}
+    private void logReg() {
         try {
             ioService.write("Введите логин");
             String log = ioService.read();
@@ -118,7 +128,7 @@ public class ForexApp {
             ioService.write("Повторите пароль");
             String pasT = ioService.read();
 
-            authorizationService.logIn(log, pas, pasT);
+            authorizationService.logReg(log, pas, pasT);
         } catch (IOException | FileSaveException e) {
             e.printStackTrace();
         }

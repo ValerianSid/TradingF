@@ -15,7 +15,7 @@ public class UserReader {
         this.objectMapper = new ProjectObjectMapper();
     }
 
-    public User getUserFromFile(String login) throws IOException {
+    public  User getUserFromFile(String login) throws IOException {
         File file = new File("C:\\Users\\anton\\OneDrive\\JAVA\\TradingF\\Users\\" + login + ".json");
         if (file.exists()) {
             return objectMapper.readValue(file, User.class);

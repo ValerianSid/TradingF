@@ -36,6 +36,14 @@ public class IOService {
             throw new FileSaveException(e.getMessage());
         }
     }
+    public User getUserFromFile(String login){
+        try {
+            return (this.reader.getUserFromFile(login));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public void write (String msg){
         System.out.println(msg);
     }
