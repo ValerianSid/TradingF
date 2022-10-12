@@ -20,10 +20,10 @@ public class UserReader {
         if (file.exists()) {
             return objectMapper.readValue(file, User.class);
         }
-        throw new IOException("Пользователь " + login + "не найден");
+        throw new IOException("Пользователь " + login + " не найден");
     }
 
-    public static boolean chkUserExist(String login) {
+    public  boolean chkUserExist(String login) {
         File file = new File("C:\\Users\\anton\\OneDrive\\JAVA\\TradingF\\Users\\");
                return Arrays.stream(
                       file.listFiles((dir, name) -> name.substring(0, name.lastIndexOf(".json")).equals(login)))

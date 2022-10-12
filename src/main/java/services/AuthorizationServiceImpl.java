@@ -34,7 +34,7 @@ public class AuthorizationServiceImpl implements AuthorizationService{
         String repPasw = Optional.ofNullable(repPassword)
                 .orElseThrow(() -> new WrongLoginException("Повторите пароль"));
         if (!pasw.equals(repPasw)) throw new WrongLoginException("Пароли не совпадают");
-        if (reader.chkUserExist(log)) throw new WrongLoginException("Пользователь " + login + " уже существует");
+        if (ioService.chkUserExist(log)) throw new WrongLoginException("Пользователь " + login + " уже существует");
         String byScriptHash = BCrypt
                 .withDefaults()
                 .hashToString(12,pasw.toCharArray());
@@ -57,6 +57,8 @@ User usr=Optional.ofNullable(login)
                 .verified)
         .orElseThrow(()->new WrongLoginException ("Не правильный логин или пароль"));
 session.setCurrentUser(usr);
+ioService.write("Открыта ссесия для "+String.valueOf(usr));
+
     }
 
     @Override

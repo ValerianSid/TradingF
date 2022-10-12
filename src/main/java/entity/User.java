@@ -14,6 +14,7 @@ public class User {
         this.wallet = new ArrayList<>();
         this.passwordHash = passwordHash;
     }
+    public User(){}
 
     public UUID getId() {
         return id;

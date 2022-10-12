@@ -28,12 +28,19 @@ public class ForexApp {
     }
 
 
-    public void run() throws IOException, NoEnoughMoneyException {
+    public void run() throws NoEnoughMoneyException, IOException {
         startMenu();
-        infoChoose();
+        startChoose();
     }
 
     private void startMenu() {
+        ioService.write("Наберите 1 чтобы войти в аккаунт");
+        ioService.write("Наберите 2 чтобы создать аккаунт");
+        ioService.write("Наберите 3 для просмотра инфо-меню");
+        ioService.write("Введите 'exit' для выхода");
+    }
+
+    private void infoMenu() {
         ioService.write("Выберите операцию:");
         ioService.write("Наберите 1 чтобы получить текущий курс пары валют по числовому id");
         ioService.write("Наберите 2 чтобы получить текущий курс пары валют по символьному выражению пары");
@@ -51,6 +58,27 @@ public class ForexApp {
         ioService.write("Наберите 4 для снятия наличных");
         ioService.write("Наберите 5 для создания нового аккаунта(счета)");
         ioService.write("Введите 'exit' для выхода");
+    }
+
+    private void startChoose() throws NoEnoughMoneyException, IOException {
+        int oper = readOperation();
+        switch (oper) {
+            case 1:
+                logIn();
+                ifExit();
+                break;
+            case 2:
+                logReg();
+                ifExit();
+                break;
+            case 3:
+                infoMenu();
+                infoChoose();
+                ifExit();
+                break;
+            default:
+                startMenu();
+        }
     }
 
     private void infoChoose() throws IOException, NoEnoughMoneyException {
@@ -75,6 +103,7 @@ public class ForexApp {
                 break;
             case 5:
                 logReg();
+                startMenu();
                 infoChoose();
                 ifExit();
                 break;
@@ -108,17 +137,22 @@ public class ForexApp {
                 operationChoose();
         }
     }
-private void logIn(){
-        try {
-            ioService.write("Введите логин");
-            String log=ioService.read();
-            ioService.write("Введите пароль");
-            String pass=ioService.read();
-            authorizationService.logIn(log,pass);
-        }catch (IOException  e) {
-            e.printStackTrace();
-        }
-}
+
+    private void logIn() throws RuntimeException, IOException, NoEnoughMoneyException {
+
+        ioService.write("Введите логин");
+        String log = ioService.read();
+        ioService.write("Введите пароль");
+        String pass = ioService.read();
+
+        authorizationService.logIn(log, pass);
+        operationMenu();
+        operationChoose();
+
+
+    }
+
+
     private void logReg() {
         try {
             ioService.write("Введите логин");
@@ -129,6 +163,8 @@ private void logIn(){
             String pasT = ioService.read();
 
             authorizationService.logReg(log, pas, pasT);
+            authorizationService.logIn(log, pas);
+
         } catch (IOException | FileSaveException e) {
             e.printStackTrace();
         }

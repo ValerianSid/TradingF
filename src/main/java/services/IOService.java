@@ -20,6 +20,7 @@ public class IOService {
         this.terminal = new BufferedReader(new InputStreamReader(System.in));
         this.processor = new UserWriter();
         this.objectMapper = new ProjectObjectMapper();
+            this.reader=new UserReader();
     }
 
     public String read() throws IOException {
@@ -38,7 +39,7 @@ public class IOService {
     }
     public User getUserFromFile(String login){
         try {
-            return (this.reader.getUserFromFile(login));
+            return reader.getUserFromFile(login);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

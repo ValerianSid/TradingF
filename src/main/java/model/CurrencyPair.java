@@ -86,11 +86,11 @@ public class CurrencyPair {
     public String toString() {
         return "CurrencyPair{" +
                 "id=" + id +
+                ", symbol='" + symbol + '\'' +
                 ", open=" + open +
                 ", high=" + high +
                 ", low=" + low +
                 ", price=" + price +
-                ", symbol='" + symbol + '\'' +
                 ", tm=" + time +
                 '}';
     }
